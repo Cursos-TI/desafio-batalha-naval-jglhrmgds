@@ -1,11 +1,124 @@
 #include <stdio.h>
+#include <locale.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+//Função para verificar se é possivel colocar o navio e não tem sobreposição
+int pode_posicionar (int tabuleiro[10][10], int linha, int coluna, int tamanho, char orientacao){
+
+    if (orientacao == 'H')
+    {
+        if (coluna + tamanho > 10)
+        {
+            printf("Navio fora dos limites\n");
+            return 0;
+        } else{
+            for (int i = 0; i < tamanho; i++)
+            {
+                if (tabuleiro[linha][coluna + i] != 0)
+                {
+                    printf("Ja existe um navio nessa posição\n");
+                    return 0;
+                }
+                
+            }
+            
+        }
+        
+    } else if (orientacao == 'V')
+    {
+        if (linha + tamanho > 10)
+        {
+            printf("Navio fora dos limites\n");
+            return 0;
+        } else {
+            for (int i = 0; i < tamanho; i++)
+            {
+                if (tabuleiro[linha + i][coluna] != 0)
+                {
+                    printf("Ja existe um navio nessa posição\n");
+                    return 0;
+                }
+                
+            }
+            
+        }
+    } else if (orientacao != 'V' && orientacao != 'H')
+    {
+        printf("Orientação inválida\n");
+        return 0;
+    } else{
+        return 1;
+    }     
+    }
+
+
+
+
+//Função para posicionar no navio
+void posicionar_navio(int tabuleiro[10][10], int linha, int coluna, int tamanho, char orientacao){
+    if (orientacao == 'H')
+    {
+        for (int i = 0; i < tamanho; i++)
+        {
+            tabuleiro[linha][coluna + i] = 3;
+        }
+        
+    } else if (orientacao == 'V'){
+        for (int i = 0; i < tamanho; i++)
+        {
+            tabuleiro[linha + i][coluna] = 3;
+        }
+    }
+}
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
+    setlocale(LC_ALL, "pt_BR.UTF-8");
+    
+    //Declarando e inicializando o tabuleiro
+    int tabuleiro [10][10];
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            tabuleiro [i][j] = 0;
+        } 
+    }
+
+
+    //Posicionando os navios
+    if (pode_posicionar(tabuleiro, 5, 7, 3, 'H'))
+    {
+        posicionar_navio(tabuleiro, 5, 7, 3, 'H');
+    }
+    
+    if (pode_posicionar(tabuleiro, 4, 1, 3, 'V'))
+    {
+        posicionar_navio(tabuleiro, 4, 1, 3, 'V');
+    }
+    
+
+    //Exibindo o tabuleiro
+    printf("  ");
+    for (char letra = 'A'; letra <= 'J'; letra++)
+    {
+        printf("%3c", letra);
+    }
+    printf("\n");
+
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%2d ", i + 1);
+
+        for (int j = 0; j < 10; j++)
+        {
+            printf(" %d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+// Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
     // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
@@ -35,6 +148,3 @@ int main() {
     // 0 0 1 0 0
     // 1 1 1 1 1
     // 0 0 1 0 0
-
-    return 0;
-}
